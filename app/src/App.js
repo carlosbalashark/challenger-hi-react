@@ -8,10 +8,10 @@ export default function App() {
 
 	const [items, setItems] = useState(data);
 
-	// useEffect(() => {
-	//   loadLocalStorage(Object.values(items));
-	//   setItems(Object.values(items));
-	// }, []);
+	useEffect(() => {
+		loadLocalStorage(Object.values(items));
+		setItems(Object.values(items));
+	}, []);
 
 	const handleLocalStorage = (id, checkBoxStatus) => {
 		switch (checkBoxStatus) {
@@ -44,14 +44,15 @@ export default function App() {
 			return root;
 		} else {
 			Object.values(items).forEach((item) => loadLocalStorage(item));
-			root.status = computeStatus(items);
+		}
+
+		if (Object.values(items).length > 0) {
+			root.status = computeStatus(items)
 		}
 
 	}
 
 	const setStatus = (root, checkBoxStatus) => {
-
-		console.log(root)
 
 		let id;
 		let items;
@@ -74,17 +75,18 @@ export default function App() {
 		}
 	};
 
+
 	const computeStatus = (items) => {
 
 		let checked = 0;
 		let indeterminate = 0;
 
 		Object.values(items).forEach((item) => {
-			if (item.status && item.status === status.checked) checked++;
-			if (item.status && item.status === status.indeterminate) indeterminate++;
+			if (item.status === status.checked) checked++;
+			if (item.status === status.indeterminate) indeterminate++;
 		});
 
-		if (checked === items.length) {
+		if (checked === Object.values(items).length) {
 			return status.checked;
 		} else if (checked > 0 || indeterminate > 0) {
 			return status.indeterminate;
@@ -112,10 +114,12 @@ export default function App() {
 			return root;
 		} else {
 			Object.values(items).forEach((item) => traverse(item, checkboxId, checkBoxStatus));
-			
-			root.status = computeStatus(items);
-
 		}
+
+		if (Object.values(items).length > 0) {
+			root.status = computeStatus(items)
+		}
+
 	};
 
 	const compute = (checkboxId, checkBoxStatus) => {
