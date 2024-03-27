@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { status } from "../../store/status";
 
 export default function Checkbox(props) {
-	const { indeterminate, checked, id, compute, ...rest } = props;
+	const { indeterminate, checked, id, compute, name, ...rest } = props;
 	const inputRef = useRef(null);
 
 	useEffect(() => {
@@ -17,6 +17,8 @@ export default function Checkbox(props) {
 			{...rest}
 			ref={inputRef}
 			type="checkbox"
+			id={name}
+			name={name}
 			onChange={() => {
 				const newStatus = inputRef.current.checked
 					? status.checked
